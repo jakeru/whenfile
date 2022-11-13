@@ -63,7 +63,7 @@ To follow the log in realtime:
 journalctl --user --unit whenfile --follow
 #+end_src
 
-To restart the service:
+To restart the service (when configuration or application has been updated):
 #+begin_src
 systemctl --user restart whenfile
 #+end_src
