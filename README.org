@@ -1,0 +1,72 @@
+* whenfile - Run a command when a file is created
+
+** Installation
+Clone the repository https://github.com/jakeru/whenfile, to a directory
+you find suitable. In this example we clone it into =$HOME/whenfile=.
+#+begin_src sh
+git clone https://github.com/jakeru/whenfile $HOME/whenfile
+#+end_src
+
+Create virtual environment and install dependencies.
+#+begin_src sh
+cd $HOME/whenfile
+python3 -m venv env
+source env/bin/activate
+pip install -r requirements.txt
+deactivate
+#+end_src
+
+** Configuration
+The configuration file is written in YAML format. This is an example of how it
+can look like:
+
+#+begin_src yaml
+---
+files:
+  - file: /dev/input/by-path/platform-i8042-serio-0-event-kbd
+    exec: echo kmonad /home/jakob/prog/kmonad-config/elitebook.kbd
+  - file: /dev/input/by-id/usb-JosefAdamcik_Sofle-event-kbd
+    cmd: kmonad /home/jakob/prog/kmonad-config/sofle.kbd
+#+end_src
+
+The example configuration above will run [[https://github.com/kmonad/kmonad][kmonad]] using different configuration
+depending on which keyboard that gets connected.
+
+Note that absolute paths should be used. You can use the file =config-test.yaml=
+as a template when creating your own configuration file.
+
+** Run the application
+To run and make the application print information about the available
+parameters, run:
+
+#+begin_src sh
+env/bin/python3 whentool.py --help
+#+end_src
+
+** Install as service
+1. Run the script =generate_service_file.sh= to generate the service file
+   =whenfile.service=
+   You can also create the service file manually. You can then use the file
+   =whenfile.service.tpl= as a template.
+
+2. Enable the service by executing the script =enable_service.sh=. This will use
+   =systemctl= to install the =whenfile= service as a systemd user service.
+
+** Examine and restart the service
+To see current status:
+#+begin_src
+systemctl --user status whenfile
+#+end_src
+
+To follow the log in realtime:
+#+begin_src
+journalctl --user --unit whenfile --follow
+#+end_src
+
+To restart the service:
+#+begin_src
+systemctl --user restart whenfile
+#+end_src
+
+** Disable the service
+The script =disable_service.sh= can be used to disable and uninstall the service.

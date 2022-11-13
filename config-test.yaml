@@ -1,0 +1,6 @@
+---
+files:
+  - file: /home/jakob/prog/whenfile/test/test1
+    cmd: echo File test1 created
+  - file: /home/jakob/prog/whenfile/test/test2
+    cmd: echo File test2 created
